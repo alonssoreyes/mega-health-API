@@ -19,6 +19,8 @@ app.use(router);
 
 router.get('/api/usuarios', usuarios.getUsers);
 router.post('/api/usuarios', usuarios.saveUser);
+router.delete('/api/usuarios/:id', usuarios.deleteUser);
+
 
 
 
