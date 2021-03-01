@@ -1,31 +1,30 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const dotenv = require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3001;
-
+const {dbConnect} = require('./database/config');
 const router = express.Router();
+const usuarios = require('./controllers/user');
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}));
 
+const connect = async () => {
+    await dbConnect();
+}
+connect();
 app.use(router);
 
 
-router.get('/api/usuarios', (req,res)=> {
-    res.send("Hola bebe")
+router.get('/api/usuarios', usuarios.getUsers);
+router.post('/api/usuarios', usuarios.saveUser);
+
+
+
+
+app.listen(port, () => {
+    console.log(`Server is running on port: ${port}`)
 })
-router.post('/api/usuarios', (req,res)=> {
-    console.log('Saving user...');
-    const email = req.body.email;
-    const password = req.body.password;
-
-    res.status(200).json({
-        email,
-        password
-    })
-})
-
-
-app.listen(port)
 
 module.exports = router;
