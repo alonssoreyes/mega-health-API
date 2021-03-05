@@ -9,8 +9,7 @@ const dbConnect = async () => {
             useCreateIndex:true,
             useFindAndModify:false
         });
-
-        console.log('db online');
+        
     } catch (error) {
         throw new Error(error);
     }
