@@ -27,6 +27,9 @@ router.post('/api/usuarios',[
     check('role', 'No es un rol valido').isIn(['ADMIN_ROLE', 'USER_ROLE', 'AUDITOR_ROLE']),
     validateFields
 ],  usuarios.saveUser);
+router.post('/api/usuarios', usuarios.saveUser);
+router.delete('/api/usuarios/:id', usuarios.deleteUser);
+
 
 
 

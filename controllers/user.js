@@ -3,18 +3,18 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 
-const getUsers = async(req,res) => { 
-    
-    try{
+const getUsers = async (req, res) => {
+
+    try {
         const users = await User.find({});
         res.json(users);
     }
-    catch(err){
+    catch (err) {
         res.status(500).json(err);
     }
 
-    
-    
+
+
 }
 
 const saveUser = async(req,res) => {
@@ -46,17 +46,36 @@ const saveUser = async(req,res) => {
             status:user.status
         })
     }
-    catch(err){
+    catch (err) {
         res.status(500).json({
             err
         })
     }
 
-    
+
+}
+
+const deleteUser = async (req, res) => {
+
+    const id = req.params.id;
+    try {
+        const deleteUser = await User.findByIdAndUpdate(id,{status:false})
+        if (deleteUser) {
+
+            res.status(200).json(deleteUser)
+
+        }
+    } catch (error) {
+        res.status(500).json(error)
+
+    }
+
+
 }
 
 
-module.exports={
+module.exports = {
     getUsers,
-    saveUser
+    saveUser,
+    deleteUser
 }
