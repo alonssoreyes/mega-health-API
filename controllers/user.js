@@ -62,11 +62,11 @@ const deleteUser = async (req, res) => {
         const deleteUser = await User.findByIdAndUpdate(id,{status:false})
         if (deleteUser) {
 
-            res.status(200).json(deleteUser)
+            return res.status(200).json(deleteUser)
 
         }
     } catch (error) {
-        res.status(500).json(error)
+        return res.status(500).json(error)
 
     }
 
