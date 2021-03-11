@@ -8,7 +8,7 @@ const router = express.Router();
 const usuarios = require('./controllers/user');
 const { check } = require('express-validator');
 const { validateFields } = require('./middlewares/validateFields');
-
+const path = require('path');
 const UI  = process.env.MEGA_HEALTH_UI || 'http://localhost:3000/';
 
 app.use(bodyParser.json())
@@ -20,8 +20,8 @@ const connect = async () => {
 connect();
 app.use(router);
 
-app.get('*', (req,res) => { 
-    res.sendFile(UI)
+app.get('/*', (req,res) => { 
+    res.sendFile(path.join(UI, 'index.html'));''
 })
 
 
