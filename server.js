@@ -10,9 +10,11 @@ const { check } = require('express-validator');
 const { validateFields } = require('./middlewares/validateFields');
 const path = require('path');
 const UI  = process.env.MEGA_HEALTH_UI || 'http://localhost:3000/';
-
+const cors = require('cors');
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}));
+
+app.use(cors({origin:"*"}));
 
 const connect = async () => {
     await dbConnect();
