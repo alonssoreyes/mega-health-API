@@ -22,7 +22,8 @@ app.use(router);
 
 app.get('/*', (req,res) => { 
     res.sendFile(path.join(UI, 'index.html'));''
-})
+});
+console.log(UI);
 
 
 router.get('/api/usuarios', usuarios.getUsers);
