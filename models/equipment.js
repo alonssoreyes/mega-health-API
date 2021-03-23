@@ -7,11 +7,19 @@ const EquipmentSchema = new Schema({
         type:String,
         required: true,
     },
-    assigned_by: {
+    assigned_by_id: {
         type:String,
         required: true,
     },
-    assigned_to: {
+    assigned_by_name: {
+        type:String,
+        required: true,
+    },
+    assigned_to_id: {
+        type:String,
+        required: true,
+    },
+    assigned_to_name: {
         type:String,
         required: true,
     },
@@ -57,6 +65,15 @@ const EquipmentSchema = new Schema({
     description: {
         type:String,
     },
+    assigned_date:{
+        type:Date
+    },
+    created_at:{
+        type:Date
+    },
+    imgPath:{
+        type:String
+    }
 });
 
 
