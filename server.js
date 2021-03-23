@@ -17,11 +17,22 @@ const cors = require('cors');
 const { isValidRole } = require('./helpers/db-validators');
 const { login } = require('./controllers/auth');
 const { validateJWT } = require('./middlewares/validate-jwt');
+const multer = require('multer');
+const uuid = require('uuid');
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}));
 
 app.use(cors({origin:"*"}));
-
+app.use(express.urlencoded({extended:false}));
+const storage = multer.diskStorage({
+    destination:  path.join(__dirname, 'public/img/uploads'),
+    filename: (req,file, callback, filename)=>{
+        callback(null,  uuid.v4() + path.extname(file.originalname))
+    }
+})
+app.use(multer({
+    storage:storage
+}).single('image'))
 const connect = async () => {
     await dbConnect();
 }
@@ -34,20 +45,21 @@ router.post('/api/auth/login', [
     check('password', 'Ingrese una contraseña').not().isEmpty(),
     validateFields
 ] ,login)
-
+router.get('/api/usuario/:id', usuarios.getUserName);
 router.get('/api/usuarios', usuarios.getUsers);
+router.put('/api/usuario/:id', usuarios.updateUser);
 router.post('/api/usuarios',  usuarios.saveUser);
-router.post('/api/usuarios', usuarios.saveUser);
 router.delete('/api/usuarios/:id',[validateJWT], usuarios.deleteUser);
 
 //Equipment Routes
 router.get('/api/equipos', equipos.getEquipments);
+router.post('/api/equipos', equipos.saveEquipment);
+router.put('/api/equipo/:id', equipos.updateEquipment);
+router.delete('/api/equipo/:id', equipos.deleteEquipment);
 
-router.post('/api/equipos', equipos.saveEquipment)
 
 
-
-
+app.use(express.static(path.join(__dirname,'public')))
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`)

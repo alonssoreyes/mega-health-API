@@ -2,7 +2,8 @@
 
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
-
+const path = require('path');
+const fs = require('fs');
 const getUsers = async (req, res) => {
 
     try {
@@ -17,9 +18,45 @@ const getUsers = async (req, res) => {
 
 }
 
+const updateUser = async (req,res)=> {
+    const id = req.params.id;
+    const data = req.body;
+    try{
+        const updated = await User.findByIdAndUpdate(id,data);
+
+        if(updated) res.json(updated);
+    }
+    catch(err){
+        res.status(500).json(err);
+    }
+}
+
+const getUserName = async(req,res) => {
+    const id = req.params.id; 
+    try{
+        const user = await User.findById(id);
+        res.json({
+            name:user.name,
+            lastName:user.lastName
+        });
+    }
+    catch(err){
+        res.status(500).json(err);
+    }
+}
+
 const saveUser = async(req,res) => {
-    const {name,lastName,email,password,alias} = req.body;
+    let imageName;
     const user = new User(req.body);
+    if(req.file){
+         imageName = req.file.filename;
+         //Set image
+        user.img = imageName;
+        user.imgPath = '/img/uploads/' + imageName;
+    }
+
+    const {email,password} = req.body;
+    
     
     
 
@@ -35,16 +72,16 @@ const saveUser = async(req,res) => {
     const salt = bcrypt.genSaltSync();
     user.password  = bcrypt.hashSync(password, salt)
 
+
+    
     //save
     try{
         await user.save();
-        res.status(200).json({
-            name: user.name,
-            lastName: user.lastName,
-            alias:user.alias,
-            role:user.role,
-            status:user.status
+
+        res.status(201).json({
+            user
         })
+
     }
     catch (err) {
         res.status(500).json({
@@ -76,6 +113,8 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
     getUsers,
+    getUserName,
     saveUser,
-    deleteUser
+    deleteUser,
+    updateUser
 }

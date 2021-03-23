@@ -18,9 +18,14 @@ const getEquipments = async (req, res) => {
 }
 
 const saveEquipment = async(req,res) => {
-    const {type,assigned_by,assigned_to,department,sucursal,category,brand,serial_number,model,location,active,conditions,buy_date,price_buy,guarantee_date,description} = req.body;
+    let imageName;
+
     const equipment = new Equipment(req.body);
-    
+    if(req.file){
+        imageName = req.file.filename;
+        //Set image
+        equipment.imgPath = '/img/uploads/' + imageName;
+   }
     //save
     try{
         await equipment.save();
@@ -31,13 +36,33 @@ const saveEquipment = async(req,res) => {
             err
         })
     }
+}
+const updateEquipment = async(req,res) => { 
+    const id = req.params.id;
 
-
+    try{
+        const updated = await Equipment.findByIdAndUpdate(id,req.body);
+        if(updated) res.json(updated);
+    }
+    catch(err){
+        res.status(500).json(err);
+    }
 }
 
+const deleteEquipment = async (req,res) => { 
+    const id = req.params.id;
 
-
+    try{
+        const updated = await Equipment.findByIdAndUpdate(id, {active:false});
+        if(updated) res.json(updated);
+    }
+    catch(err){
+        res.status(500).json(err);
+    }
+}
 module.exports = {
     saveEquipment,
-    getEquipments
+    getEquipments,
+    updateEquipment,
+    deleteEquipment
 }

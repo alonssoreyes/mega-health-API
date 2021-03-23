@@ -22,10 +22,12 @@ const UserSchema = new Schema({
     },
     password: {
         type:String,
-        required: true,
     },
     img: {
         type:String,
+    },
+    imgPath:{
+        type:String
     },
     role: {
         type:String,
@@ -36,6 +38,12 @@ const UserSchema = new Schema({
         type:Boolean,
         default:true,
     },
+    created_at:{
+        type:Date
+    },
+    updated_at:{
+        type:Date
+    }
 });
 
 UserSchema.methods.toJSON = function(){
