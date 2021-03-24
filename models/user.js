@@ -26,6 +26,9 @@ const UserSchema = new Schema({
     img: {
         type:String,
     },
+    department:{
+        type:String
+    },
     imgPath:{
         type:String
     },
