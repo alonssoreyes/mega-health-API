@@ -8,7 +8,7 @@ const {dbConnect} = require('./database/config');
 const router = express.Router();
 const usuarios = require('./controllers/user');
 const equipos = require('./controllers/equipment');
-
+const sucursales = require('./controllers/sucursal');
 const { check } = require('express-validator');
 const { validateFields } = require('./middlewares/validateFields');
 const path = require('path');
@@ -57,6 +57,11 @@ router.post('/api/equipos', equipos.saveEquipment);
 router.put('/api/equipo/:id', equipos.updateEquipment);
 router.delete('/api/equipo/:id', equipos.deleteEquipment);
 
+//Scurusal routes
+router.get('/api/sucursales', sucursales.getSucursales)
+router.post('/api/sucursales', sucursales.saveSucursal)
+router.put('/api/sucursal/:id',sucursales.updateSucursal);
+router.delete('/api/sucursal/:id', sucursales.deleteSucursal)
 
 
 app.use(express.static(path.join(__dirname,'public')))
