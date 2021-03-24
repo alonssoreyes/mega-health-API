@@ -40,8 +40,15 @@ const saveEquipment = async(req,res) => {
 const updateEquipment = async(req,res) => { 
     const id = req.params.id;
 
+    
     try{
-        const updated = await Equipment.findByIdAndUpdate(id,req.body);
+        const equipment = await Equipment.findByIdAndUpdate(id,req.body);
+        if(req.file){
+            imageName = req.file.filename;
+            //Set image
+            equipment.imgPath = '/img/uploads/' + imageName;
+        }
+        const updated = await equipment.save();
         if(updated) res.json(updated);
     }
     catch(err){

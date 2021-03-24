@@ -25,7 +25,6 @@ const EquipmentSchema = new Schema({
     },
     department: {
         type:String,
-        required: true,
     },
     sucursal: {
         type:String,
