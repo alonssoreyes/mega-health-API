@@ -22,8 +22,13 @@ const updateUser = async (req,res)=> {
     const id = req.params.id;
     const data = req.body;
     try{
-        const updated = await User.findByIdAndUpdate(id,data);
-
+        const user = await User.findByIdAndUpdate(id,data);
+        if(req.file){
+            imageName = req.file.filename;
+            //Set image
+            user.imgPath = '/img/uploads/' + imageName;
+        }
+        const updated = await user.save();
         if(updated) res.json(updated);
     }
     catch(err){
